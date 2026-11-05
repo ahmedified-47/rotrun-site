@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="#fff9e6" name="theme-color"/><meta content="Ahmed on turning a repeated task into one playbook: the steps, the files to keep, and checks that can fail. Four prompts you can paste." name="description"/><title>Hand repeat work to one playbook | Ahmed</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{--cream:#fff9e6;--red:#d02b2d;--ink:#302f2d;--soft:#f8e9d8;--sage:#f1efdf;--muted:#62615c;--line:#e5ddca;--display:'Anton',Impact,'Arial Narrow',sans-serif;--body:'DM Sans',Arial,sans-serif;--mono:'IBM Plex Mono',monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:122px}body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased}a{color:inherit}button{font:inherit;cursor:pointer}::selection{background:#f5bdb4;color:#261c1c}
+.progress{position:fixed;top:0;left:0;width:0;height:4px;background:var(--red);z-index:60}
+.site-header{background:var(--cream);position:sticky;top:0;z-index:50;border-bottom:2px solid var(--line)}
+.nav{max-width:1180px;margin:auto;min-height:133px;padding:22px 30px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;position:relative}
+.brandmark{display:none}.brandtitle{font-family:var(--display);font-size:30px;letter-spacing:.035em;text-align:center;color:var(--red);text-transform:uppercase;line-height:1}
+.navlinks{display:flex;align-items:center;justify-content:center;gap:38px;margin:0;font-size:13px;letter-spacing:.10em;font-weight:700;text-transform:uppercase}
+.navlinks a{text-decoration:none;color:#625f58}.navlinks a:hover,.navlinks a:focus-visible{color:var(--red)}.menu{display:none;border:1px solid #d8d0bd;background:transparent;border-radius:4px;width:44px;height:43px;font-size:24px;color:var(--ink)}
+.mobile-menu{display:none;padding:8px 24px 20px;background:var(--cream);border-top:1px solid var(--line)}.mobile-menu.open{display:block}.mobile-menu a{display:block;padding:12px 0;text-decoration:none;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+.wrap{width:min(100%,1050px);margin:auto;padding-left:30px;padding-right:30px}
+.hero{background:var(--red);color:var(--cream);border:0}.hero .wrap{padding-top:75px;padding-bottom:86px}.eyebrow,.mini-label{font-family:var(--display);font-weight:400;letter-spacing:.13em;text-transform:uppercase}.hero .eyebrow{font-size:15px;background:var(--cream);color:var(--red);padding:12px 15px;display:inline-block}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(63px,10vw,122px);letter-spacing:-.025em;line-height:.99;text-transform:uppercase;max-width:950px;margin:30px 0 32px}.hero .lead{color:#ffe8d9;font-size:clamp(20px,2.9vw,32px);line-height:1.53;max-width:865px;font-weight:400;letter-spacing:0}
+.byline{display:flex;gap:10px 26px;flex-wrap:wrap;border-top:1px solid #e46e63;margin-top:37px;padding-top:24px;color:#ffddcc;font-size:14px;line-height:1.5}.byline b{color:#fff6df}
+.main{padding-top:74px;padding-bottom:70px}.section{margin-bottom:88px;scroll-margin-top:150px}.section h2{font-family:var(--display);font-weight:400;font-size:clamp(36px,6vw,65px);letter-spacing:.005em;line-height:1.15;text-transform:uppercase;margin:0 0 25px}.section h3{font-family:var(--display);font-weight:400;letter-spacing:.012em;text-transform:uppercase;font-size:29px;line-height:1.2;margin:38px 0 18px}
+.section p,.section li{font-size:clamp(17px,2.1vw,21px);line-height:1.72;letter-spacing:0}.section p{margin:0 0 25px}.section ul,.section ol{padding-left:29px;margin:20px 0 28px}.section li{padding-left:5px;margin-bottom:11px}.section strong{font-weight:800}.section a.text-link{color:var(--red);text-decoration-thickness:2px;text-underline-offset:4px}.small{font-size:15px!important;color:var(--muted)}
+.note{background:var(--sage);border-left:5px solid #96a38d;padding:24px 27px;margin:35px 0;border-radius:0}.note p{margin:0;font-size:18px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin:35px 0}.three>div{padding:27px 22px;background:#f8ead6;border-top:5px solid var(--red);border-radius:0}.three .num{font:600 13px var(--mono);color:var(--red)}.three h3{margin:12px 0;font-size:25px}.three p{font-size:16px;line-height:1.57;color:#56524b;margin:0}
+.prompt{background:#282622;border:0;border-radius:0;overflow:hidden;margin:32px 0 49px;box-shadow:none;color:#fff7e5}.prompt-top{background:var(--red);color:#fff9e6;text-transform:uppercase;font:400 18px var(--display);letter-spacing:.13em;padding:17px 24px}.prompt pre{white-space:pre-wrap;overflow-wrap:anywhere;font:400 clamp(13px,1.65vw,16px)/1.85 var(--mono);margin:0;padding:30px 25px 20px;tab-size:2}.prompt-foot{display:flex;justify-content:flex-end;padding:0 25px 27px}.copy{border:1px solid #fff0d3;background:transparent;border-radius:0;color:#fff7e7;padding:12px 19px;font:600 13px var(--mono)}.copy:hover,.copy.copied{background:#fff7e7;color:#282622}
+.example{background:var(--sage);padding:29px 31px;border:0;border-left:5px solid #97a48e;border-radius:0;margin:28px 0}.example h3{margin:0 0 14px}.example p{font-size:17px;margin:0 0 10px}.example p:last-child{margin:0}.directory{padding:28px;background:#292723;color:#fff5df;border-radius:0;white-space:pre;overflow:auto;font:14px/1.85 var(--mono)}
+.checklist{display:grid;gap:0;margin:27px 0}.checkline{display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid #dcd4c1;padding:16px 4px;font-size:18px;line-height:1.4}.checkline input{accent-color:var(--red);height:20px;width:20px;margin-top:3px}.divider{height:2px;background:var(--line);margin:54px 0}.source{font-size:15px!important;line-height:1.6!important}.mini-label{color:var(--red);font-size:15px;margin-bottom:14px!important}
+.cta{background:var(--red);padding:75px 0}.cta-card{background:var(--cream);color:var(--ink);border:0;border-radius:0;box-shadow:none;padding:45px 49px}.cta-card .eyebrow{color:var(--red);font-size:18px}.cta-card h2{font-family:var(--display);font-size:clamp(36px,6vw,67px);font-weight:400;text-transform:uppercase;letter-spacing:.005em;line-height:1.14;margin:22px 0 23px}.cta-card p{font-size:20px;line-height:1.64;color:#5f5b55}.linkrow{display:flex;gap:14px;flex-wrap:wrap;margin:30px 0 0}.pill{display:inline-block;background:var(--red);color:var(--cream);text-decoration:none;border:2px solid var(--red);border-radius:0;padding:15px 22px;font:400 18px var(--display);letter-spacing:.04em;text-transform:uppercase}.pill.outline{background:transparent;color:var(--red)}.pill:hover{filter:brightness(.9)}
+footer{background:var(--cream);border-top:1px solid var(--line);padding:42px 0 55px;color:#908b82;font-size:14px;text-align:center}footer .wrap{display:flex;flex-direction:column;align-items:center;gap:12px}footer a{color:var(--red)}
+@media(max-width:760px){html{scroll-padding-top:100px}.nav{min-height:108px;padding:19px 18px 14px;gap:15px}.brandtitle{font-size:25px}.navlinks{gap:15px;max-width:100%;font-size:10px;letter-spacing:.015em;flex-wrap:wrap}.navlinks a:nth-child(n+4){display:none}.menu{position:absolute;right:14px;top:12px;display:block;width:36px;height:36px;font-size:21px;border:0}.wrap{padding-left:24px;padding-right:24px}.hero .wrap{padding-top:55px;padding-bottom:61px}.hero h1{font-size:clamp(53px,12.3vw,85px);margin:27px 0 24px;line-height:1.04}.hero .lead{font-size:21px;line-height:1.6}.byline{margin-top:30px;padding-top:20px;gap:7px 16px;font-size:12px}.main{padding-top:68px;padding-bottom:50px}.section{margin-bottom:68px}.section h2{font-size:clamp(35px,9vw,48px);line-height:1.17}.section h3{font-size:27px}.section p,.section li{font-size:18px;line-height:1.69}.three{grid-template-columns:1fr}.three>div{padding:22px}.prompt-top{padding:15px 18px;font-size:16px}.prompt pre{padding:23px 18px;font-size:13px;line-height:1.78}.prompt-foot{padding:0 18px 22px}.example{padding:22px 21px}.directory{font-size:11px;padding:19px}.cta{padding:54px 0}.cta-card{padding:29px 27px}.cta-card p{font-size:18px}.pill{font-size:16px;padding:14px 16px}footer{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body>
+<div class="progress" id="progress"></div>
+<header class="site-header">
+<nav aria-label="Main navigation" class="nav">
+<div class="brandmark">&gt;ai.</div>
+<div class="brandtitle">AI HACKS WITH AHMED</div>
+<div class="navlinks">
+<a href="#inside">GUIDE</a>
+<a href="#process">STEPS</a>
+<a href="#toolbox">FILES</a>
+<a href="#proof">CHECKS</a>
+<a href="#prompts">FOLDER</a>
+</div>
+<button aria-expanded="false" aria-label="Open menu" class="menu" id="menu">☰</button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+<a href="#inside">In this guide</a>
+<a href="#why">Where it breaks</a>
+<a href="#setup">Pick the job</a>
+<a href="#process">1. The steps</a>
+<a href="#toolbox">2. The files</a>
+<a href="#proof">3. The checks</a>
+<a href="#loop">Fix the file</a>
+<a href="#prompts">The folder</a>
+<a href="#first">A first sitting</a>
+</div>
+</header>
+<section class="hero">
+<div class="wrap">
+<div class="eyebrow">Written guide · four prompts to paste</div>
+<h1>Hand repeat work to one playbook</h1>
+<div class="lead">When the same task comes back, skip the new agent. Write the job once, keep the files you already trust, and make the model show its work before you take it back.</div>
+<div class="byline">
+<span>By <b>Ahmed</b></span>
+<span><b><a href="https://www.instagram.com/aihackswithahmed/" rel="noopener" target="_blank">@aihackswithahmed</a></b></span>
+</div>
+</div>
+</section>
+<main class="wrap main">
+<section class="section" id="inside">
+<h2>In this guide</h2>
+<ul>
+<li>Why a pile of one-off agents gets messy fast.</li>
+<li>How to write a single playbook for one job you repeat.</li>
+<li>Three layers: <strong>the steps, the saved files, and the checks</strong>.</li>
+<li><strong>Four prompts you can paste</strong> to build the playbook and repair it later.</li>
+<li>How to do this in Claude Code, and how to do it in ChatGPT or Claude in the browser.</li>
+<li>Filled examples for turning long content into posts, weekly client notes, invoice reminders, and hiring screens.</li>
+<li>A folder layout, five traps, and a checklist for the first sitting.</li>
+</ul>
+<p>I'm Ahmed. This is the written version of the loop I use when a task shows up again. Open a blank folder. By the end of the first pass you should have a playbook you can run.</p>
+<div class="note"><p><strong>What this is, and what it is not.</strong> The loop on this page is a way to teach repeat work. Anthropic's Agent Skills docs use a folder of instructions plus a file named <code>SKILL.md</code>. They have not dropped agents, and some jobs still want more than one. Use this when the work repeats and you want one clear set of instructions first.</p></div>
+</section>
+<section class="section" id="why">
+<h2>Where a pile of agents breaks</h2>
+<p>The usual start is excitement. An agent for mail, another for posts, one for research, one for chasing replies. Pretty soon you are keeping four half-built setups. Each setup carries a separate prompt, a separate pile of files, and its own quirks. Change the way you work and you have to patch every setup by hand.</p>
+<p>A newer model is often not the missing piece. The missing piece is <strong>how you already do the job</strong>: the call you make without noticing, the file you open first, and the last look you give something before it goes out.</p>
+<p>A calmer start is one strong AI setup, with separate instructions for each job. Anthropic packages that kind of reuse as Agent Skills: written directions, scripts, and the notes that sit beside them. That is a starting point, not a rule that one agent wins every technical problem.</p>
+<div class="three">
+<div><div class="num">01 / STEPS</div><h3>Spell the job out</h3><p>Cover the start of the work, the choices that change the output, and the picture of done.</p></div>
+<div><div class="num">02 / FILES</div><h3>Keep what works</h3><p>Store the templates, samples, scripts, and notes you would hand to a teammate.</p></div>
+<div><div class="num">03 / CHECKS</div><h3>Prove the result</h3><p>Ask for proof that can fail, before the draft comes back to you.</p></div>
+</div>
+<p>When a run goes wrong, edit the playbook that owns that job. A correction left inside one chat will not be there next time.</p>
+</section>
+<section class="section" id="setup">
+<h2>Pick one job before you write anything</h2>
+<p>Leave the hardest job in the business for later. Choose work you do at least once a week, work where a bad result is obvious to you, and work you could teach a coworker in one short conversation.</p>
+<p>A weekly client note, a long video cut into short posts, a reminder for an invoice that is past due, or a first pass over applications with a scorecard you already agreed: any of those is a fair first job.</p>
+<h3>Where the playbook sits</h3>
+<p><strong>Claude Code, or any tool that can touch files:</strong> Create the folder on disk, or inside a repository you control. With the right permission, the model can create the files and update them.</p>
+<p><strong>ChatGPT or Claude in the browser:</strong> keep the master folder on your computer or in Drive. Bring the current files into the chat when you start. Unless that product writes back to the folder for you, a new draft in the chat does not replace the master. Save the new text, then refresh the copy the chat is using.</p>
+<div class="note"><p><strong>One folder is the master.</strong> Do not keep two competing copies of the same playbook. Leave passwords, API keys, and private personal details out of any folder you might share or push to a public repository.</p></div>
+</section>
+<section class="section" id="process">
+<p class="mini-label">Part 1</p>
+<h2>The steps: get the real workflow onto the page</h2>
+<p>The playbook starts as an interview. Have Claude, or ChatGPT, interview you. Cover what sets the job off, which files you touch, the order you work in, where you use judgement, and the mistakes that already happened.</p>
+<p>The interview matters because the automatic parts are the ones you skip. Maybe a client note always opens on the biggest movement in the numbers. Maybe a reel does not go out until you have said the hook out loud. Those habits are what make the output look like your work.</p>
+<p>If you want a Skill that Claude can load, put a short description and the instructions in <code>SKILL.md</code>. If you are only using chat, a normal Markdown file with the same contents is still worth keeping, even if nothing installs it as a Skill.</p>
+<h3>Prompt 1: interview, then write the playbook</h3>
+<div class="prompt">
+<div class="prompt-top">Prompt to paste · 01 / Interview and steps</div>
+<pre id="p1">Turn one task I repeat into a written playbook the model can follow next time.
+
+The task: [NAME THE JOB YOU REPEAT].
+
+Start by interviewing me. Ask a single question, then wait. Do not write the playbook until we have talked through all of this:
+- what kicks the task off, and how often it comes back
+- which inputs I need, and where I get them
+- the steps, in the order I really do them
+- where I choose, and the rule I am applying when I choose
+- how I can tell a good result from a bad one
+- tone, layout, and who it is for
+- mistakes I have already made, odd cases, and exceptions
+- the last checks I do before I call it finished
+
+If an answer is fuzzy, ask again. Before you draft, ask whether I want to add anything.
+
+When I tell you the interview is done, give me:
+1. A short job title, plus a concrete line on when this playbook should be used.
+2. A full playbook in the shape of SKILL.md. Include why it exists, when to run it, what it needs, the steps, the choice rules, what finished means, and the exceptions.
+3. A list of files or references that still need to be created.
+4. Two questions for me: where did you misunderstand the job, and what did I fail to mention?
+
+When file access is available, create [JOB-NAME] and save SKILL.md inside that folder. When it is not, show the full text and name the path where I should put it. If the file is not on disk, do not tell me it is.</pre>
+<div class="prompt-foot"><button aria-label="Copy the full prompt" class="copy" data-copy="p1">Copy the prompt</button></div>
+</div>
+<p class="small">Tip: if you plan to install this as a Skill Anthropic's tools can load, add YAML frontmatter at the top of <code>SKILL.md</code>, with the name field and the description field filled in.</p>
+</section>
+<section class="section" id="toolbox">
+<p class="mini-label">Part 2</p>
+<h2>The files: stop rebuilding the pieces you trust</h2>
+<p>The file layer is the material the job keeps needing. When a template, a script, a checklist, or a sample you approved actually works, save a version you can reuse. Mention that file inside the playbook, and spell out the moment to open it.</p>
+<p>Without that layer, the model may invent a new email shape, a new caption pattern, or a new spreadsheet script on every run. The same effort gets repeated, and the output drifts a little each time.</p>
+<h3>What is worth saving</h3>
+<ul>
+<li>Scripts that do one predictable step the same way each time.</li>
+<li>Templates with blanks for the details that change per run.</li>
+<li>Samples you have already approved, so the bar is visible.</li>
+<li>Reference notes, including names, spellings, and the words you use.</li>
+<li>Voice notes for the brand, and smaller prompts you run inside the job.</li>
+</ul>
+<p>Leave out drafts you have not signed off, results you will not need again, login secrets, and anything you would not want a coworker to copy blindly.</p>
+<h3>Prompt 2: save the files you will need again</h3>
+<div class="prompt">
+<div class="prompt-top">Prompt to paste · 02 / Files worth keeping</div>
+<pre id="p2">Review the run we just completed, together with the written instructions in [JOB-NAME].
+
+Point out anything we built that we will probably need on the next run: a script, a template, a checklist, wording I already approved, a data note, or a prompt I would reuse.
+
+For every item worth keeping:
+1. Pick a clear filename and store it in a files folder inside [JOB-NAME].
+2. Swap details that belong only to this case for obvious [PLACEHOLDERS]. Keep one filled example that I have already approved, if that helps.
+3. Point to that file from SKILL.md by name, and say when to open it.
+4. In INDEX.md under files/, add a row that lists the filename, what it is for, and the date I reviewed it.
+5. Leave out one-off drafts, wording I have not approved, passwords, private keys, and secrets.
+
+Run the job again with those files in place. Report which saved files you opened again, and which parts you still had to create on the spot. If you had to create something again, name one more file worth keeping.
+
+Without file access, print every proposed file in full, name its path, and print the updated index. Only say a file is saved after it is really on disk.</pre>
+<div class="prompt-foot"><button aria-label="Copy the full prompt" class="copy" data-copy="p2">Copy the prompt</button></div>
+</div>
+<h3>File sets for four jobs</h3>
+<div class="example"><h3>Long content into posts</h3><p>A bank of hooks, a shape for captions, notes on voice, a few reference reels, and a line on why those openings held attention. Save them as <code>hooks.md</code>, <code>post-shape.md</code>, and <code>voice-notes.md</code>.</p></div>
+<div class="example"><h3>Weekly client notes</h3><p>A script that gathers the figures, a skeleton for the note, a spelling list, rules for tone, and two notes you have already sent and still stand by. Save them as <code>pull-figures.py</code>, <code>note-skeleton.md</code>, <code>name-spellings.md</code>, and <code>sound-rules.md</code>.</p></div>
+<div class="example"><h3>Invoice reminders</h3><p>Mail you have approved for an early nudge and a later one, a written path for what happens if it stays open, contact records kept somewhere private, and a note on tone.</p></div>
+<div class="example"><h3>Hiring screens</h3><p><code>role-note.md</code>, <code>rubric.md</code>, sample reviews you have approved, and one reply template you use every time. A person still has to sign off when the decision affects a real applicant.</p></div>
+</section>
+<section class="section" id="proof">
+<p class="mini-label">Part 3</p>
+<h2>The checks: say what finished means in a way you can test</h2>
+<p>Telling a model to "check your work" and hoping it notices is a weak plan. A useful check names something that can be tested without trusting how sure the model sounds.</p>
+<p>A real check leaves evidence. A figure agrees with the file it came from. The link has to load. The length has to sit inside the cap you set. A test you run on the code comes back green. A statement lines up with a note you already trust. A check that has no way to fail is too soft to keep.</p>
+<h3>Prompt 3: add checks that can fail</h3>
+<div class="prompt">
+<div class="prompt-top">Prompt to paste · 03 / Checks</div>
+<pre id="p3">On the [JOB-NAME] instructions, add two sections: what finished means, and the checks that prove it.
+
+Write 5 to 10 checks that fit this job. Each check needs a pass or a fail that does not depend on how confident you feel. The evidence has to come from somewhere other than your own judgement.
+
+Useful evidence looks like this:
+- a figure matched against the source file
+- a link that really opens
+- a screenshot of the thing as it actually rendered
+- a code test you executed, with a passing result
+- a claim tied to a named source
+- a count, a filename, or a spelling compared with a reference list
+
+Skip checks that only say the work "seems fine" or "feels polished".
+
+On later runs of this playbook:
+1. Do the job.
+2. Run every check you can.
+3. Fix what fails, then run the checks again.
+4. Mark each check as PASS or FAIL or NOT VERIFIED, and attach the evidence.
+5. Say plainly what you could not check. Never claim a test executed, and never claim a link opened, unless you really did that.
+6. If a cluster of related checks fails, stop. Name the process problem underneath before you polish the wording.
+
+Put these rules into SKILL.md. If you cannot edit files, print the whole revised section and tell me where it belongs.</pre>
+<div class="prompt-foot"><button aria-label="Copy the full prompt" class="copy" data-copy="p3">Copy the prompt</button></div>
+</div>
+<h3>Checks that are specific enough</h3>
+<p><strong>Posts:</strong> the hook stays inside the word limit you set, the spoken script lands inside the length you wanted, at the pace you had in mind, claims line up with their sources, and the closing line uses the keyword you approved.</p>
+<p><strong>Client note:</strong> every figure agrees with the original data, the name in the note is the one on the spelling list, and every open action from last time is answered.</p>
+<p><strong>Invoice reminder:</strong> the amount, the due date, and the recipient match the records, the payment destination was checked, and the tone fits how late the invoice is.</p>
+<p><strong>Hiring screen:</strong> each score points at something actually written in the application, and missing or uncertain facts are flagged instead of filled in.</p>
+</section>
+<section class="section" id="loop">
+<h2>The loop: change the playbook, leave the chat alone</h2>
+<p>When a draft is wrong, the easy move is to answer "try again, you missed the brief" and carry on. Next time the same job runs, the same miss comes back, because that fix never made it into the playbook.</p>
+<p>Call the layer by name. If a step was never written down, that is the <strong>steps</strong> layer. If a saved file is stale, or the model rebuilt a template from nothing, that is the <strong>files</strong> layer. If a check should have caught the miss and did not, that is the <strong>checks</strong> layer.</p>
+<h3>Prompt 4: find the miss and patch the file</h3>
+<div class="prompt">
+<div class="prompt-top">Prompt to paste · 04 / Diagnose and repair</div>
+<pre id="p4">The latest [JOB-NAME] result missed. The specific miss: [DESCRIBE THAT ERROR].
+
+Do not stop at a patched chat reply. Name the layer:
+- PROCESS: a step, a choice rule, or an exception was absent, or it was stated badly.
+- TOOLBOX: a file you meant to reuse was absent, out of date, chosen poorly, or created again for no reason.
+- PROOF: no check covered this miss, or the check existed and still let it through.
+
+State the cause in a few lines, then name the smallest change that should stop a repeat.
+
+After that:
+1. Change the section or file that is actually wrong. Leave the rest of the playbook alone.
+2. If this same mistake has happened twice, add a direct rule that blocks it.
+3. Write a dated line in notes.md inside [JOB-NAME], covering the error and the fix.
+4. Run the job again, including the checks.
+5. Place the earlier result next to the new one, and say whether the fix held.
+
+If editing is blocked, show the replacement text and the path. The fix is not lasting until that source file on disk has been edited.</pre>
+<div class="prompt-foot"><button aria-label="Copy the full prompt" class="copy" data-copy="p4">Copy the prompt</button></div>
+</div>
+<p>Read the correction notes on a regular pass. If the same layer keeps failing, that layer needs more than another chat nudge. Spend the next pass on a sharper rule, a stronger template, or a test you can execute with a script.</p>
+</section>
+<section class="section" id="prompts">
+<h2>The folder after you have built it</h2>
+<p>A separate folder for each job makes the matching instructions easier to spot. Write the description the way you would actually ask for that job.</p>
+<div class="directory">client-week-note/
+├── SKILL.md            # when to use it, inputs, order of work,
+│                       # choice rules, and how you test done
+├── files/
+│   ├── INDEX.md        # a list of saved pieces and why they exist
+│   ├── pull-figures.py # gathers the figures from the source export
+│   ├── note-skeleton.md
+│   └── sound-rules.md
+├── examples/
+│   ├── kept-note-01.md
+│   └── kept-note-02.md
+└── notes.md            # a log of misses and the edits that followed</div>
+<p class="small">If Claude should load this as a Skill, put name and description in YAML at the top of <code>SKILL.md</code>. Ship a script only when the model can run it safely in that environment, and get a yes before it opens private systems.</p>
+<h3>A short SKILL.md, filled in</h3>
+<div class="directory">---
+name: client-week-note
+description: Use this when asked for the weekly
+  client results or a short progress note.
+---
+
+# Weekly client update
+
+## What you need
+- The reporting file that was already approved
+- What was promised the week before
+- The client's name spelling and style notes
+
+## Order of work
+1. Open the latest approved report file.
+2. Line the numbers up against the target and the prior week.
+3. Draft from files/note-skeleton.md.
+4. Match every figure back to that source file.
+
+## Finished means
+- Each number agrees with the source.
+- The name in the note is the one on the spelling list.
+- Each promise from last week is answered.
+- If a number is missing, say so. Do not invent one.</div>
+</section>
+<section class="section" id="example">
+<h2>Walkthrough: a weekly client note</h2>
+<p><strong>Steps.</strong> During the interview, spell out this order: start in the ads dashboard, set last week's numbers against the plan, lead with the largest movement, and write the note in a plain voice. That order becomes part of the playbook.</p>
+<p><strong>Files.</strong> Once a run is good enough to keep, store the script that gathers the numbers, the skeleton of the note, a spelling list, and a sample you still like. Link each item so the model knows where to look.</p>
+<p><strong>Checks.</strong> Every figure has to agree with the source. The note has to stay inside the length you set. The client name has to match the spelling list. Last week's promise has to be answered.</p>
+<p><strong>Loop.</strong> Picture a follow-up note that cites a figure the dashboard does not contain. Log the miss under checks, write a rule that each figure must be present in the source, and run the note once more. The point of that extra run is to see the rule catch the bad figure. Asking the model to try harder is not enough.</p>
+<p>Over time, more of the sitting should go to reading the result in front of you, and less of it to saying the same directions again. A person should still approve anything that leaves the building, and any choice with real stakes.</p>
+</section>
+<section class="section" id="mistakes">
+<h2>Five traps</h2>
+<ol>
+<li><strong>Drafting the steps from memory alone.</strong> Use the interview to surface the real choices and the odd cases.</li>
+<li><strong>One giant folder for every task.</strong> Give each job its own folder so the right notes are easy to open.</li>
+<li><strong>A fuzzy description of when to use the playbook.</strong> Say the exact moment this file should be opened.</li>
+<li><strong>Skipping the checks.</strong> "Seems fine" is not evidence the task was done.</li>
+<li><strong>Correcting the chat and stopping.</strong> Change the master file, then run the job again and see if the fix is still there.</li>
+</ol>
+</section>
+<section class="section" id="first">
+<h2>A first sitting</h2>
+<p>Start with one task you do on a regular schedule. Treat half an hour as a sensible first sitting, not a promise that a complicated job will be fully written and tested that fast.</p>
+<div class="checklist">
+<label class="checkline"><input type="checkbox"/> Pick one repeated task where a bad draft is easy to catch.</label>
+<label class="checkline"><input type="checkbox"/> Use prompt 1, and reply with examples taken from the real work.</label>
+<label class="checkline"><input type="checkbox"/> Save the first playbook and read it back.</label>
+<label class="checkline"><input type="checkbox"/> Finish one real run of the job, and then use prompt 2 so the useful files get saved.</label>
+<label class="checkline"><input type="checkbox"/> Run prompt 3 and add checks you can actually fail.</label>
+<label class="checkline"><input type="checkbox"/> Do the job again and compare the two results.</label>
+<label class="checkline"><input type="checkbox"/> When the same error shows up again, run prompt 4.</label>
+</div>
+<p>The second run is the one that shows what you can trust on the next run, what is still fuzzy, and which checks are too loose. Do not stop when the first write-up is done.</p>
+<div class="divider"></div>
+<h3>More to read</h3>
+<p class="source"><a class="text-link" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" rel="noopener" target="_blank">Anthropic on Agent Skills</a>. Their write-up of folders of instructions, the extra files beside them, and the way a skill is loaded.</p>
+<p class="source"><a class="text-link" href="https://resources.anthropic.com/building-effective-ai-agents" rel="noopener" target="_blank">Anthropic on building agents that work</a>. Their note on when one agent, several agents, or a fixed workflow is the better fit.</p>
+<p class="small">I wrote this guide myself. Anthropic, Claude, ChatGPT, and OpenAI did not publish it, and nothing here promises a perfect run.</p>
+</section>
+</main>
+<section class="cta">
+<div class="wrap">
+<div class="cta-card">
+<div class="eyebrow">AHMED  /  WRITTEN GUIDE</div>
+<h2>Write the first playbook.</h2>
+<p>The prompts, the layout, and a full example are on this page. Choose a task that keeps returning, hold on to what works, and write each fix into the file.</p>
+<div class="linkrow">
+<a class="pill" href="https://www.instagram.com/aihackswithahmed/" rel="noopener" target="_blank">Follow @aihackswithahmed</a>
+<a class="pill outline" href="#process">Jump back to prompt 1 ↑</a>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<div class="wrap">
+<span>© 2026 Ahmed.</span>
+<span><a href="https://www.instagram.com/aihackswithahmed/" rel="noopener" target="_blank">@aihackswithahmed</a></span>
+</div>
+</footer>
+<script>
+const menu=document.getElementById('menu'),mobile=document.getElementById('mobile-menu');menu.addEventListener('click',()=>{const open=mobile.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'✕':'☰'});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobile.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰'}));document.querySelectorAll('[data-copy]').forEach(btn=>btn.addEventListener('click',async()=>{const v=document.getElementById(btn.dataset.copy).innerText;try{await navigator.clipboard.writeText(v)}catch{const t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}btn.textContent='Copied ✓';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy the prompt';btn.classList.remove('copied')},1800)}));function updateProgress(){let d=document.documentElement;document.getElementById('progress').style.width=((d.scrollTop/(d.scrollHeight-d.clientHeight))*100||0)+'%'}addEventListener('scroll',updateProgress,{passive:true});updateProgress();
+</script></body></html>
